@@ -1,30 +1,18 @@
 import express from 'express'
-import User from '../models/userModel.js'
+import UserDAO from '../dao/UserDAO.js'
+import UserCtrl from '../controller/userController.js'
+
 // User Route to access user data, log users in, sign users up etc etc
 const router= express.Router()
-router.get('/', async(req,res)=>{
-    res.send("get at user route")
-})
 
-router.post('/addUser', async(req,res)=>{
-    const reqbody= req.body
-    console.log(reqbody)
+router.get('/getUser', UserDAO.getUser)
 
-    const newUser= {
-        name:reqbody.Name,
-        password:reqbody.Password,
-        email:reqbody.Email,
-        isAdmin:false,
-    }
-    try {
-        await User.create(newUser);
-        console.log("Done");
-        res.send("DONE");
-      } catch (err) {
-        console.log(err);
-        res.send(err);
-      }
-    }
-    )
+router.post('/addUser', UserDAO.createNewUser)
+
+router.post('/login', UserCtrl.loginUser)
+
+router.get('/refresh', UserCtrl.handleRefreshToken)
+
+router.get('/logout', UserCtrl.handleLogout)
     
 export default router;
