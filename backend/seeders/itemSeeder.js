@@ -18,6 +18,7 @@ const importItems = async () => {
         name:serverItem.title,
         description:serverItem.description? serverItem.description: "",
         category: serverItem.category,
+        brand:serverItem.brand,
         price: serverItem.price,
         rating: null,
         stock:serverItem.stock,
