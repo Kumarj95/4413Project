@@ -5,9 +5,9 @@ import UserCtrl from '../controller/userController.js'
 // User Route to access user data, log users in, sign users up etc etc
 const router= express.Router()
 
-router.get('/getUser', UserDAO.getUser)
+router.get('/getUser', UserCtrl.getUser)
 
-router.post('/addUser', UserDAO.createNewUser)
+router.post('/addUser', UserCtrl.createNewUser)
 
 router.post('/login', UserCtrl.loginUser)
 

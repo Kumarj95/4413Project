@@ -4,6 +4,16 @@ import User from '../models/userModel.js'
 import Item from '../models/itemModel.js'
 import CartDAO from '../dao/cartDAO.js'
 
+const getCart = async(req, res) => {
+    if (!req?.query?.email) return res.status(400).json({ "message": 'Email required' });
+    const owner = req.user._id
+    const cart = await CartDAO.getCart(owner);
+    if(!cart) {
+        return res.status(204).json({ 'message': `User ID ${req.params.id} not found` });
+    }
+    res.json(cart)
+}
+
 const addCart = async(req, res) => { 
     const cookies = req.cookies;
     
@@ -28,7 +38,7 @@ const addCart = async(req, res) => {
     const quantity = req.body.quantity;
 
     try {
-        const cart = await Cart.findOne({ owner });
+        const cart = await CartDAO.getCart(owner);
         const item = await Item.findOne({ Name: itemName });
         if (!item) {
             res.status(404).send({ message: "item not found" });
@@ -66,12 +76,17 @@ const addCart = async(req, res) => {
         else 
         {
             //no cart exists, create one
-            console.log(typeof price);
-            const newCart = await Cart.create({
+            const newCartData= {
+                _id:owner,
+                items: [{ itemId, name, quantity, price }],
+                bill: quantity * price,
+            }
+            const newCart = await CartDAO.createCart(newCartData)
+            /*const newCart = await Cart.create({
                 owner,
                 items: [{ itemId, name, quantity, price }],
                 bill: quantity * price,
-            });
+            });*/
             return res.status(201).send(newCart);
         }
     } 
@@ -167,4 +182,4 @@ const deleteCart = async (req, res) => {
     }
 };
 
-export default {addCart, deleteCartItem, deleteCart}
+export default {getCart, addCart, deleteCartItem, deleteCart}

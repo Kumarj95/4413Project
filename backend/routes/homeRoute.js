@@ -22,7 +22,7 @@ router.post('/', async(req,res)=>{
 
         const refreshToken = cookies.jwt
         
-        const user = await User.findOne({ refreshToken }).exec();
+        const user = await UserDAO.getUser("refreshToken", refreshToken);
 
         if (!user) return res.sendStatus(401); //Unauthorized 
 
@@ -36,22 +36,12 @@ router.post('/', async(req,res)=>{
 
         }
         else {
-
-            // get user data such as cart.
+            
+            res.status(201).json({ 'success': `User found, persist cart through getCart call.` });
 
         }
 
     }
 })
-
-// router.get('/getUser', UserDAO.getUser)
-
-// router.post('/addUser', UserCtrl.createNewUser)
-
-// router.post('/login', UserCtrl.loginUser)
-
-// router.get('/refresh', UserCtrl.handleRefreshToken)
-
-// router.get('/logout', UserCtrl.handleLogout)
     
 export default router;

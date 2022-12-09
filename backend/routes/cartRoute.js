@@ -6,14 +6,12 @@ import cartCtrl from '../controller/cartController.js'
 const router= express.Router()
 
 
-router.get('/getCart', cartDAO.getCart)
+router.get('/getCart', cartCtrl.getCart)
 
 router.post('/addCart', cartCtrl.addCart)
 
 router.delete('/deleteCartItem', cartCtrl.deleteCartItem)
 
 router.delete('/deleteCart', cartCtrl.deleteCart)
-
-//router.get('/logout', UserCtrl.handleLogout)
     
 export default router;
