@@ -189,7 +189,7 @@ const loginUser = async (req, res) => {
                 UserInfo: {
                     name: foundUser.name,
                     email: foundUser.email,
-                    roles: "user",
+                    roles: foundUser.type,
                 },
             },
             process.env.ACCESS_TOKEN_SECRET,
@@ -261,7 +261,7 @@ const handleRefreshToken = async (req, res) => {
                     UserInfo: {
                         name: foundUser.name,
                         email: foundUser.email,
-                        roles: "user",
+                        roles: foundUser.type,
                     },
                 },
                 process.env.ACCESS_TOKEN_SECRET,
