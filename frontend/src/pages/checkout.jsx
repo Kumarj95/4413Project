@@ -58,16 +58,27 @@ const Checkout = () => {
             address:address
         }
 
-        await axios.get(`${userApi}/refresh`)
+        const accessResponse=await axios.get(`${userApi}/refresh`)
+        const accesToken= accessResponse.data.user
+        if(!accesToken){
+            alert("Issue with login")
+            navigate("/login")
+            window.location.reload(false);
+        }else{
+            localStorage.setItem("accToken", accesToken)
         const body={
             address:add
         }
-
-        await axios.post(`${orderApi}/placeOrder`, body)
+        const token= localStorage.getItem("accToken")
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        
+        await axios.post(`${orderApi}/placeOrder`, body, config)
         
         navigate("/")
         window.location.reload(false);
-
+    }
         
 
     }
