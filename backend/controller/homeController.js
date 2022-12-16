@@ -34,9 +34,10 @@ const enterSite = async (req, res) => {
     // once the cookie has expired, then delete user from DB??
     if (!cookies?.jwt) {
         // update to properly redirect without hard setting values
+        
         res.redirect(
             307,
-            "http://localhost:" + port + "/api/user/addUser?createCheck=false"
+            "http" + (req.socket.encrypted ? "s" : "") + "://" + req.headers.host + "/api/user/addUser?createCheck=false"
         );
     } 
     else {
